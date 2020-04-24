@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group >
+        <item
+            android:id="@+id/driverFragment"
+            android:title="@string/textData" />
+        <item
+            android:id="@+id/bankFragment"
+            android:title="@string/textBank" />
+        <item
+            android:id="@+id/order_detailFragment"
+            android:title="@string/textOrder" />
+        <item
+            android:id="@+id/incomeFragment"
+            android:title="@string/textIncome" />
+        <item
+            android:id="@+id/guideFragment"
+            android:title="@string/textGuide" />
+        <item
+            android:id="@+id/opinionFragment"
+            android:title="@string/textOpinion" />
+    </group>
+</menu>

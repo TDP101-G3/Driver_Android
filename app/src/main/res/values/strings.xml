@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Driver</string>
+    <string name="textData">基本資料</string>
+    <string name="textBank">銀行帳戶</string>
+    <string name="textOrder">訂單記錄</string>
+    <string name="textIncome">收入統計分析</string>
+    <string name="textGuide">駕駛指南</string>
+    <string name="textOpinion">意見反應</string>
+    <string name="textName">Name</string>
+    <string name="textScore">4.0</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="textOpen">Open</string>
+    <string name="textClose">Close</string>
+    <string name="textOff">下線</string>
+    <string name="textOn">上線</string>
+    <string name="textLocationNotFound">location is not found</string>
+    <string name="textUpdateFail">update fail</string>
+    <string name="textUpdateSuccess">update succesfully</string>
+    <string name="textNoNetwork">no network connection available</string>
+    <string name="textYes">確定</string>
+    <string name="textMessage">你有新訂單,請確認接單!</string>
+    <string name="textNo">取消</string>
+    <string name="textCancel">確定要取消訂單嗎？</string>
+    <string name="textCancelOrder">取消訂單</string>
+    <string name="textStartDrive">開始代駕</string>
+    <string name="textToCustomer">導航至顧客位置</string>
+    <string name="textToEnd">導航至目的地</string>
+    <string name="textFinish">完成訂單</string>
+    <string name="textOriginNotFound">origin is not found</string>
+    <string name="textDestinationNotFound">destination is not found</string>
+    <string name="textOk">確認</string>
+
+</resources>

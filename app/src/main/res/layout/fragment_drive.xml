@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DriveFragment" >
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="tvName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPhone"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="tvPhone"
+        app:layout_constraintEnd_toEndOf="@+id/tvName"
+        app:layout_constraintStart_toStartOf="@+id/tvName"
+        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+    <TextView
+        android:id="@+id/tvModel"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="tvModel"
+        app:layout_constraintEnd_toEndOf="@+id/tvPhone"
+        app:layout_constraintStart_toStartOf="@+id/tvPhone"
+        app:layout_constraintTop_toBottomOf="@+id/tvPhone" />
+
+    <TextView
+        android:id="@+id/tvPlate"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="tvPlate"
+        app:layout_constraintEnd_toEndOf="@+id/tvModel"
+        app:layout_constraintStart_toStartOf="@+id/tvModel"
+        app:layout_constraintTop_toBottomOf="@+id/tvModel" />
+
+    <TextView
+        android:id="@+id/tvStart"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="tvStart"
+        app:layout_constraintEnd_toEndOf="@+id/tvPlate"
+        app:layout_constraintStart_toStartOf="@+id/tvPlate"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlate" />
+
+    <TextView
+        android:id="@+id/tvEnd"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="tvEnd"
+        app:layout_constraintEnd_toEndOf="@+id/tvStart"
+        app:layout_constraintStart_toStartOf="@+id/tvStart"
+        app:layout_constraintTop_toBottomOf="@+id/tvStart" />
+
+    <Button
+        android:id="@+id/btCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/main_button"
+        android:text="@string/textCancelOrder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvEnd" />
+
+    <Button
+        android:id="@+id/btFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/main_button"
+        android:text="@string/textFinish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btToEnd"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/btSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/main_button"
+        android:text="@string/textStartDrive"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvEnd" />
+
+    <Button
+        android:id="@+id/btToEnd"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/main_button"
+        android:text="@string/textToEnd"
+        app:layout_constraintEnd_toEndOf="@+id/tvEnd"
+        app:layout_constraintStart_toStartOf="@+id/tvEnd"
+        app:layout_constraintTop_toBottomOf="@+id/tvEnd"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/btToCustomer"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/main_button"
+        android:text="@string/textToCustomer"
+        app:layout_constraintEnd_toEndOf="@+id/tvEnd"
+        app:layout_constraintStart_toStartOf="@+id/tvEnd"
+        app:layout_constraintTop_toBottomOf="@+id/tvEnd" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
