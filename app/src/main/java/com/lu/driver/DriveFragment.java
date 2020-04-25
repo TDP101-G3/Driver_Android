@@ -1,21 +1,25 @@
 package com.lu.driver;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
@@ -29,6 +33,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -52,6 +72,7 @@ import static com.lu.driver.CommonTwo.chatWebSocketClient;
 public class DriveFragment extends Fragment {
     private View view;
     private static final int REQ_STAR = 2;
+    private static final int REQ_CHECK_SETTINGS = 1;
     private Activity activity;
     private TextView tvName,tvPhone,tvModel,tvPlate,tvStart,tvEnd;
     private Button btSelect,btCancel,btFinish,btToCustomer,btToEnd;
@@ -62,12 +83,28 @@ public class DriveFragment extends Fragment {
     private String o,d;
     Double longitude,latitude;
     private LocalBroadcastManager broadcastManager;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    private FusedLocationProviderClient fusedLocationClient;
+    private Location lastLocation;
+    private Driver driver;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         CommonTwo.connectServer(activity, CommonTwo.loadUserName(activity));
+        locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(3000) //3秒 單位：ms
+                .setSmallestDisplacement(5); //5公尺 單位：m
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                lastLocation = locationResult.getLastLocation();
+                updateLastLocationInfo(lastLocation);
+            }
+        };
     }
 
     @Override
@@ -80,8 +117,10 @@ public class DriveFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        driver = new Driver(driver_id);
         registerChatReceiver();
         navController = findNavController(view);
+        checkLocationSettings();
         Customer customer = null;
         Driver driver = null;
         tvName = view.findViewById(R.id.tvName);
@@ -423,6 +462,102 @@ public class DriveFragment extends Fragment {
         }
         else if(resultCode == RESULT_CANCELED){
 
+        }
+    }
+
+    // 更新位置訊息
+    private void updateLastLocationInfo(Location lastLocation) {
+        if (lastLocation == null) {
+            Toast.makeText(activity, R.string.textLocationNotFound, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (Common.networkConnected(activity)) {
+            String url = Common.URL_SERVER + "DriverServlet";
+            driver.setLocation(lastLocation.getLatitude(),lastLocation.getLongitude());
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "locationUpdate");
+            jsonObject.addProperty("driver", new Gson().toJson(driver));
+            int count = 0;
+            try {
+                String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                count = Integer.parseInt(result);
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+            if (count == 0) {
+                Common.showToast(activity, R.string.textUpdateFail);
+            } else {
+                Common.showToast(activity, R.string.textUpdateSuccess);
+            }
+        } else {
+            Common.showToast(activity, R.string.textNoNetwork);
+        }
+    }
+
+    // 檢查裝置是否開啟Location設定
+    private void checkLocationSettings() {
+        // 必須將LocationRequest設定加入檢查
+        LocationSettingsRequest.Builder builder =
+                new LocationSettingsRequest.Builder()
+                        .addLocationRequest(locationRequest);
+        Task<LocationSettingsResponse> task =
+                LocationServices.getSettingsClient(activity)
+                        .checkLocationSettings(builder.build());
+        task.addOnSuccessListener(activity, new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                if (ActivityCompat.checkSelfPermission(activity,
+                        Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // 取得並顯示最新位置
+                    showLastLocation();
+
+                }
+            }
+        });
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    Log.e(TAG, e.getMessage());
+                    try {
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        // 跳出Location設定的對話視窗
+                        resolvable.startResolutionForResult(activity, REQ_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            }
+        });
+    }
+
+    private void showLastLocation() {
+        if (fusedLocationClient == null) {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+            fusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if (task.isSuccessful()) {
+                        lastLocation = task.getResult();
+                        updateLastLocationInfo(lastLocation);
+
+                    }
+                }
+            });
+
+            // 持續取得最新位置。looper設為null代表以現行執行緒呼叫callback方法，而非使用其他執行緒
+            fusedLocationClient.requestLocationUpdates(
+                    locationRequest, locationCallback, null);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (fusedLocationClient != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }
 }

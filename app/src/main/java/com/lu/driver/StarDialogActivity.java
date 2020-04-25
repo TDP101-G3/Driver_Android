@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StarDialogActivity extends AppCompatActivity {
     private static final String TAG = "StarDialogActivity";
-    private CommonTask callTask;
     private RatingBar rb;
     private Button btOk;
 
