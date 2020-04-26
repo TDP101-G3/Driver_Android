@@ -26,6 +26,13 @@ public class StarDialogActivity extends AppCompatActivity {
 
         //設定RatingBar 評分的步長
         rb.setStepSize(1.0f);
+        float m =rb.getRating();
+        SharedPreferences pref = getSharedPreferences(Common.PREF_FILE,
+                MODE_PRIVATE);
+        pref.edit()
+                .putFloat("m",m)
+                .apply();
+        setResult(RESULT_CANCELED);
         rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -52,7 +59,7 @@ public class StarDialogActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setTitle("");
+        setTitle("評分顧客");
     }
 
     private void showToast(int messageResId) {

@@ -31,5 +31,7 @@
     <string name="textOriginNotFound">origin is not found</string>
     <string name="textDestinationNotFound">destination is not found</string>
     <string name="textOk">確認</string>
+    <string name="textLogout">登出</string>
+    <string name="textCancelCheck">你的訂單已被取消</string>
 
 </resources>

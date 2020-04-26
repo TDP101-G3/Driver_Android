@@ -11,7 +11,8 @@
         android:layout_marginTop="16dp"
         android:layout_gravity="center"
         android:saveEnabled="true"
-        android:numStars="5">
+        android:numStars="5"
+        android:rating="5.0">
     </RatingBar>
 
     <Button

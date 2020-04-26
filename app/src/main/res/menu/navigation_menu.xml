@@ -20,5 +20,8 @@
         <item
             android:id="@+id/opinionFragment"
             android:title="@string/textOpinion" />
+        <item
+            android:id="@+id/logout"
+            android:title="@string/textLogout" />
     </group>
 </menu>

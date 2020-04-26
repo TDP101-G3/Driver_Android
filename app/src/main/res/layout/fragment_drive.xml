@@ -7,7 +7,7 @@
     tools:context=".DriveFragment" >
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvNameinfo"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="tvPhone"
-        app:layout_constraintEnd_toEndOf="@+id/tvName"
-        app:layout_constraintStart_toStartOf="@+id/tvName"
-        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+        app:layout_constraintEnd_toEndOf="@+id/tvNameinfo"
+        app:layout_constraintStart_toStartOf="@+id/tvNameinfo"
+        app:layout_constraintTop_toBottomOf="@+id/tvNameinfo" />
 
     <TextView
         android:id="@+id/tvModel"

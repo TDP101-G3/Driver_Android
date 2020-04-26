@@ -23,7 +23,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,23 +40,16 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.DoubleStream;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -123,7 +115,7 @@ public class DriveFragment extends Fragment {
         checkLocationSettings();
         Customer customer = null;
         Driver driver = null;
-        tvName = view.findViewById(R.id.tvName);
+        tvName = view.findViewById(R.id.tvNameinfo);
         tvPhone = view.findViewById(R.id.tvPhone);
         tvModel = view.findViewById(R.id.tvModel);
         tvPlate = view.findViewById(R.id.tvPlate);
@@ -413,9 +405,30 @@ public class DriveFragment extends Fragment {
             final ChatMessage chatMessage = new Gson().fromJson(message, ChatMessage.class);
             String m = chatMessage.getMessage();
             // 接收到聊天訊息，若發送者與目前聊天對象相同，就換頁
-            if (m.equals("yo")) {
-                CommonTwo.showToast(context,"yo");
-                //navController.navigate(R.id.driveFragment);
+            if(m.equals("cancel")){
+                new AlertDialog.Builder(activity)
+                        /* 設定標題 */
+                        //.setTitle(R.string.textTitle)
+                        /* 設定圖示 */
+                        //.setIcon(R.drawable.alert)
+                        /* 設定訊息文字 */
+                        .setMessage(R.string.textCancelCheck)
+                        /* 設定positive與negative按鈕上面的文字與點擊事件監聽器 */
+                        .setPositiveButton(R.string.textYes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                /* 結束此Activity頁面 */
+                                activity.onBackPressed();
+                            }
+                        })
+                        .setNegativeButton(R.string.textNo, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                /* 關閉對話視窗 */
+                                activity.onBackPressed();
+                            }
+                        })
+                        .show();
             }
             Log.d(TAG, message);
         }
@@ -461,7 +474,34 @@ public class DriveFragment extends Fragment {
             }
         }
         else if(resultCode == RESULT_CANCELED){
-
+            if (requestCode == REQ_STAR) {
+                SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
+                        MODE_PRIVATE);
+                float m = pref.getFloat("m", 0);
+                Order order = new Order(order_id,m);
+                if (Common.networkConnected(activity)) {
+                    String url = Common.URL_SERVER + "OrderServlet";
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("action", "customer_scoreUpdate");
+                    jsonObject.addProperty("order", new Gson().toJson(order));
+                    int count = 0;
+                    try {
+                        String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                        count = Integer.parseInt(result);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+                    if (count == 0) {
+                        Common.showToast(activity, R.string.textUpdateFail);
+                    } else {
+                        Common.showToast(activity, R.string.textUpdateSuccess);
+                    }
+                } else {
+                    Common.showToast(activity, R.string.textNoNetwork);
+                }
+                CommonTwo.showToast(activity,String.valueOf(m));
+                activity.onBackPressed();
+            }
         }
     }
 

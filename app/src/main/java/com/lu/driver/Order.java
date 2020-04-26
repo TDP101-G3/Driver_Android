@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Order implements Serializable {
     private int order_id;
+    private int driver_id;
+    private int customer_id;
     private String order_start;
     private String order_end;
     private double customer_score;
@@ -11,6 +13,12 @@ public class Order implements Serializable {
 
     public Order(int order_id, double customer_score) {
         this.order_id = order_id;
+        this.customer_score = customer_score;
+    }
+
+    public Order(int driver_id, double driver_score, double customer_score) {
+        this.driver_id = driver_id;
+        this.driver_score = driver_score;
         this.customer_score = customer_score;
     }
 
@@ -31,6 +39,22 @@ public class Order implements Serializable {
 
     public void setOrder_id(int order_id) {
         this.order_id = order_id;
+    }
+
+    public int getDriver_id() {
+        return driver_id;
+    }
+
+    public void setDriver_id(int driver_id) {
+        this.driver_id = driver_id;
+    }
+
+    public int getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
     }
 
     public String getOrder_start() {
