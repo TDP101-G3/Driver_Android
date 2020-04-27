@@ -598,6 +598,13 @@ public class DriveFragment extends Fragment {
         super.onPause();
         if (fusedLocationClient != null) {
             fusedLocationClient.removeLocationUpdates(locationCallback);
+            fusedLocationClient = null;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showLastLocation();
     }
 }

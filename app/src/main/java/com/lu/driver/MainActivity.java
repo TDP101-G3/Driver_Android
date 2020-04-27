@@ -9,6 +9,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,12 +21,14 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private TextView tvNameinfo,tvScoreinfo;
     private int driver_id = 1;
-    private ImageView ivUser;
+    private CircleImageView ivUser;
     private Driver driver = null;
     private Order order = null;
     private static final String TAG = "MainActivity";
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         tvNameinfo = header.findViewById(R.id.tvNameinfo);
         tvScoreinfo = header.findViewById(R.id.tvScoreinfo);
+        ivUser = header.findViewById(R.id.ivUser);
         if (Common.networkConnected(this)) {
             String url = Common.URL_SERVER + "DriverServlet";
             JsonObject jsonObject = new JsonObject();
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         }
         score = String.valueOf(s);
         tvScoreinfo.setText(score);
+        showPhoto();
     }
 
     private void setUpActionBar() {
@@ -117,5 +122,21 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showPhoto(){
+        int imageSize = getResources().getDisplayMetrics().widthPixels / 3;
+        Bitmap bitmap = null;
+        try {
+            String url = Common.URL_SERVER + "DriverServlet";
+            bitmap = new ImageTask(url, driver_id, imageSize).execute().get();
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+        if (bitmap != null) {
+            ivUser.setImageBitmap(bitmap);
+        } else {
+            ivUser.setImageResource(R.drawable.no_image);
+        }
     }
 }

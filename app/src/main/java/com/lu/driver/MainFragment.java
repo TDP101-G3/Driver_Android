@@ -135,6 +135,9 @@ public class MainFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    if (fusedLocationClient == null) {
+                        showLastLocation();
+                    }
                     driver_status = 1;
                     if (Common.networkConnected(activity)) {
                         String url = Common.URL_SERVER + "DriverServlet";
@@ -181,6 +184,9 @@ public class MainFragment extends Fragment {
                     } else {
                         Common.showToast(activity, R.string.textNoNetwork);
                     }
+                    if (fusedLocationClient != null) {
+                        fusedLocationClient.removeLocationUpdates(locationCallback);
+                    }
                 }
             }
         });
@@ -204,7 +210,7 @@ public class MainFragment extends Fragment {
             final ChatMessage chatMessage = new Gson().fromJson(message, ChatMessage.class);
             String m = chatMessage.getMessage();
             // 接收到聊天訊息，若發送者與目前聊天對象相同，就換頁
-            if (m.equals("yo")) {
+            if (m.equals("call")) {
                 CommonTwo.showToast(context,"yo");
                 //navController.navigate(R.id.driveFragment);
                 new AlertDialog.Builder(activity)
@@ -340,10 +346,17 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        showLastLocation();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (fusedLocationClient != null) {
             fusedLocationClient.removeLocationUpdates(locationCallback);
+            fusedLocationClient = null;
         }
     }
 
