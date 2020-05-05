@@ -16,10 +16,10 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
+public class CustomerImageTask extends AsyncTask<Object, Integer, Bitmap> {
     private final static String TAG = "ImageTask";
     private String url;
-    private int driver_id, imageSize;
+    private int customer_id, imageSize;
     /* ImageTask的屬性strong參照到SpotListFragment內的imageView不好，
         會導致SpotListFragment進入背景時imageView被參照而無法被釋放，
         而且imageView會參照到Context，也會導致Activity無法被回收。
@@ -27,14 +27,14 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
     private WeakReference<ImageView> imageViewWeakReference;
 
     // 取單張圖片
-    public ImageTask(String url, int driver_id, int imageSize) {
-        this(url, driver_id, imageSize, null);
+    public CustomerImageTask(String url, int customer_id, int imageSize) {
+        this(url, customer_id, imageSize, null);
     }
 
     // 取完圖片後使用傳入的ImageView顯示，適用於顯示多張圖片
-    public ImageTask(String url, int driver_id, int imageSize, ImageView imageView) {
+    public CustomerImageTask(String url, int customer_id, int imageSize, ImageView imageView) {
         this.url = url;
-        this.driver_id = driver_id;
+        this.customer_id = customer_id;
         this.imageSize = imageSize;
         this.imageViewWeakReference = new WeakReference<>(imageView);
     }
@@ -43,7 +43,7 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
     protected Bitmap doInBackground(Object... params) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getImage");
-        jsonObject.addProperty("driver_id", driver_id);
+        jsonObject.addProperty("customer_id", customer_id);
         jsonObject.addProperty("imageSize", imageSize);
         return getRemoteImage(url, jsonObject.toString());
     }

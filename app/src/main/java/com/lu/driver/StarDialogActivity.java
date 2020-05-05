@@ -1,11 +1,9 @@
 package com.lu.driver;
 
 import android.content.SharedPreferences;
-import android.media.Rating;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 

@@ -8,9 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -21,15 +19,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -55,7 +50,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import static android.content.Context.MODE_PRIVATE;
 import static androidx.navigation.Navigation.findNavController;
 import static com.lu.driver.CommonTwo.chatWebSocketClient;
 
@@ -72,7 +66,6 @@ public class MainFragment extends Fragment {
     private Activity activity;
     private MapView mapView;
     private GoogleMap map;
-    private TextView textView;
     private Driver driver;
     private int driver_status = 0;
     private int driver_id = 1;
@@ -116,7 +109,6 @@ public class MainFragment extends Fragment {
         registerChatReceiver();
         navController = findNavController(view);
         checkLocationSettings();
-        textView = view.findViewById(R.id.tvLastLocation);
         mapView = view.findViewById(R.id.mapView);
         driver = new Driver(driver_id);
         // 在Fragment生命週期方法內呼叫對應的MapView方法
@@ -211,7 +203,7 @@ public class MainFragment extends Fragment {
             String m = chatMessage.getMessage();
             // 接收到聊天訊息，若發送者與目前聊天對象相同，就換頁
             if (m.equals("call")) {
-                CommonTwo.showToast(context,"yo");
+                CommonTwo.showToast(context,"call");
                 //navController.navigate(R.id.driveFragment);
                 new AlertDialog.Builder(activity)
                         /* 設定標題 */
@@ -225,6 +217,28 @@ public class MainFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 /* 結束此Activity頁面 */
+                                driver_status = 2;
+                                if (Common.networkConnected(activity)) {
+                                    String url = Common.URL_SERVER + "DriverServlet";
+                                    driver.setStatus(driver_status);
+                                    JsonObject jsonObject = new JsonObject();
+                                    jsonObject.addProperty("action", "driverUpdate");
+                                    jsonObject.addProperty("driver", new Gson().toJson(driver));
+                                    int count = 0;
+                                    try {
+                                        String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                                        count = Integer.parseInt(result);
+                                    } catch (Exception e) {
+                                        Log.e(TAG, e.toString());
+                                    }
+                                    if (count == 0) {
+                                        Common.showToast(activity, R.string.textUpdateFail);
+                                    } else {
+                                        Common.showToast(activity, R.string.textUpdateSuccess);
+                                    }
+                                } else {
+                                    Common.showToast(activity, R.string.textNoNetwork);
+                                }
                                 String sender = CommonTwo.loadUserName(activity);
                                 String friend = chatMessage.getSender();
                                 CommonTwo.saveCustomer(activity,friend);
@@ -303,17 +317,11 @@ public class MainFragment extends Fragment {
 
     // 更新位置訊息
     private void updateLastLocationInfo(Location lastLocation) {
-        String message = "";
-        message += "The Information of the Last Location \n";
 
         if (lastLocation == null) {
             Toast.makeText(activity, R.string.textLocationNotFound, Toast.LENGTH_SHORT).show();
             return;
         }
-        message += "latitude: " + lastLocation.getLatitude() + "\n";
-        message += "longitude: " + lastLocation.getLongitude() + "\n";
-
-        textView.setText(message);
         refreshCenter(lastLocation.getLatitude(),lastLocation.getLongitude());
 
         if (Common.networkConnected(activity)) {
@@ -348,6 +356,30 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(driver_status == 2){
+            driver_status = 1;
+            if (Common.networkConnected(activity)) {
+                String url = Common.URL_SERVER + "DriverServlet";
+                driver.setStatus(driver_status);
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("action", "driverUpdate");
+                jsonObject.addProperty("driver", new Gson().toJson(driver));
+                int count = 0;
+                try {
+                    String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                    count = Integer.parseInt(result);
+                } catch (Exception e) {
+                    Log.e(TAG, e.toString());
+                }
+                if (count == 0) {
+                    Common.showToast(activity, R.string.textUpdateFail);
+                } else {
+                    Common.showToast(activity, R.string.textUpdateSuccess);
+                }
+            } else {
+                Common.showToast(activity, R.string.textNoNetwork);
+            }
+        }
         showLastLocation();
     }
 
@@ -421,5 +453,29 @@ public class MainFragment extends Fragment {
         // Fragment頁面切換時解除註冊，但不需要關閉WebSocket，
         // 否則回到前頁好友列表，會因為斷線而無法顯示好友
         broadcastManager.unregisterReceiver(chatReceiver);
+        if(driver_status == 1){
+            driver_status = 0;
+            if (Common.networkConnected(activity)) {
+                String url = Common.URL_SERVER + "DriverServlet";
+                driver.setStatus(driver_status);
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("action", "driverUpdate");
+                jsonObject.addProperty("driver", new Gson().toJson(driver));
+                int count = 0;
+                try {
+                    String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                    count = Integer.parseInt(result);
+                } catch (Exception e) {
+                    Log.e(TAG, e.toString());
+                }
+                if (count == 0) {
+                    Common.showToast(activity, R.string.textUpdateFail);
+                } else {
+                    Common.showToast(activity, R.string.textUpdateSuccess);
+                }
+            } else {
+                Common.showToast(activity, R.string.textNoNetwork);
+            }
+        }
     }
 }

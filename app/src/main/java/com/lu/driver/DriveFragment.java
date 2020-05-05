@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -51,6 +52,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -58,9 +61,6 @@ import static androidx.navigation.Navigation.findNavController;
 import static com.lu.driver.CommonTwo.chatWebSocketClient;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class DriveFragment extends Fragment {
     private View view;
     private static final int REQ_STAR = 2;
@@ -80,6 +80,8 @@ public class DriveFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
     private Location lastLocation;
     private Driver driver;
+    private CircleImageView ivCustomer;
+    String customer_id;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +128,8 @@ public class DriveFragment extends Fragment {
         btFinish = view.findViewById(R.id.btFinish);
         btToCustomer = view.findViewById(R.id.btToCustomer);
         btToEnd = view.findViewById(R.id.btToEnd);
-        String customer_id = CommonTwo.loadCustomer(activity).replaceAll("customer","");
+        ivCustomer = view.findViewById(R.id.ivCustomer);
+        customer_id = CommonTwo.loadCustomer(activity).replaceAll("customer","");
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "CustomerServlet";
             JsonObject jsonObject = new JsonObject();
@@ -152,7 +155,7 @@ public class DriveFragment extends Fragment {
             tvModel.setText(Model);
             tvPlate.setText(Plate);
         }
-
+        showPhoto();
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "OrderServlet";
             JsonObject jsonObject = new JsonObject();
@@ -606,5 +609,21 @@ public class DriveFragment extends Fragment {
     public void onResume() {
         super.onResume();
         showLastLocation();
+    }
+
+    private void showPhoto(){
+        int imageSize = getResources().getDisplayMetrics().widthPixels / 3;
+        Bitmap bitmap = null;
+        try {
+            String url = Common.URL_SERVER + "CustomerServlet";
+            bitmap = new CustomerImageTask(url, Integer.parseInt(customer_id), imageSize).execute().get();
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+        if (bitmap != null) {
+            ivCustomer.setImageBitmap(bitmap);
+        } else {
+            ivCustomer.setImageResource(R.drawable.no_image);
+        }
     }
 }

@@ -6,9 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".DriveFragment" >
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivCustomer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        app:civ_border_width="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/tvNameinfo"
-        android:layout_width="275dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="tvName"
@@ -18,7 +29,7 @@
 
     <TextView
         android:id="@+id/tvPhone"
-        android:layout_width="275dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="tvPhone"
@@ -28,7 +39,7 @@
 
     <TextView
         android:id="@+id/tvModel"
-        android:layout_width="275dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="tvModel"
@@ -38,7 +49,7 @@
 
     <TextView
         android:id="@+id/tvPlate"
-        android:layout_width="275dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="tvPlate"
@@ -48,7 +59,7 @@
 
     <TextView
         android:id="@+id/tvStart"
-        android:layout_width="275dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="tvStart"
@@ -58,7 +69,7 @@
 
     <TextView
         android:id="@+id/tvEnd"
-        android:layout_width="275dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="tvEnd"
@@ -111,7 +122,7 @@
 
     <Button
         android:id="@+id/btToCustomer"
-        android:layout_width="275dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/main_button"

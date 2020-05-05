@@ -14,12 +14,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import java.text.DecimalFormat;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -84,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         if(order != null){
             s = order.getDriver_score();
         }
-        score = String.valueOf(s);
+        DecimalFormat mDecimalFormat = new DecimalFormat("#.#");
+        score = mDecimalFormat.format(s);
         tvScoreinfo.setText(score);
         showPhoto();
     }
