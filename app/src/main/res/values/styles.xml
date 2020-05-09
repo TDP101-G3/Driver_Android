@@ -5,7 +5,17 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#B5B5B5</item>
+    </style>
+
+    <!-- 欄位辨識 -->
+    <style name="TextInputHint" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">#B5B5B5</item>
+    </style>
+    <style name="TextInputError" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:textColor">#FF0000</item>
     </style>
 
 </resources>

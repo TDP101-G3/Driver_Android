@@ -9,6 +9,11 @@ public class Driver implements Serializable {
     private int driver_status;
     private double driver_longitude;
     private double driver_latitude;
+    private String driver_email;
+    private String driver_password;
+    private String driver_bank_name;
+    private String driver_bank_account;
+    private String driver_bank_code;
 
     public Driver(int driver_id) {
         this.driver_id = driver_id;
@@ -27,9 +32,19 @@ public class Driver implements Serializable {
         this.driver_latitude = driver_latitude;
     }
 
-    public void setLocation(double driver_latitude, double driver_longitude){
+    public void setLocation(double driver_latitude, double driver_longitude) {
         this.driver_latitude = driver_latitude;
         this.driver_longitude = driver_longitude;
+    }
+
+    public Driver(String driver_name, String driver_email, String driver_password, String driver_phone, String driver_bank_name, String driver_bank_account, String driver_bank_code) {
+        this.driver_name = driver_name;
+        this.driver_email = driver_email;
+        this.driver_password = driver_password;
+        this.driver_phone = driver_phone;
+        this.driver_bank_name = driver_bank_name;
+        this.driver_bank_account = driver_bank_account;
+        this.driver_bank_code = driver_bank_code;
     }
 
     public void setStatus(int driver_status) {
@@ -82,5 +97,47 @@ public class Driver implements Serializable {
 
     public void setDriver_latitude(double driver_latitude) {
         this.driver_latitude = driver_latitude;
+    }
+
+
+    public String getDriver_email() {
+        return driver_email;
+    }
+
+    public void setDriver_email(String driver_email) {
+        this.driver_email = driver_email;
+    }
+
+    public String getDriver_password() {
+        return driver_password;
+    }
+
+    public void setDriver_password(String driver_password) {
+        this.driver_password = driver_password;
+    }
+
+
+    public String getDriver_bank_name() {
+        return driver_bank_name;
+    }
+
+    public void setDriver_bank_name(String driver_bank_name) {
+        this.driver_bank_name = driver_bank_name;
+    }
+
+    public String getDriver_bank_account() {
+        return driver_bank_account;
+    }
+
+    public void setDriver_bank_account(String driver_bank_account) {
+        this.driver_bank_account = driver_bank_account;
+    }
+
+    public String getDriver_bank_code() {
+        return driver_bank_code;
+    }
+
+    public void setDriver_bank_code(String driver_bank_code) {
+        this.driver_bank_code = driver_bank_code;
     }
 }

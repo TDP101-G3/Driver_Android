@@ -41,6 +41,10 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyB5QhRk7RXlIvshtQzyw3GKtDnNSSuNWqM" />
 
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity android:name="com.lu.driver.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

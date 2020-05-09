@@ -2,6 +2,7 @@ package com.lu.driver;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Locale;
 
 public class Common {
@@ -57,5 +59,12 @@ public class Common {
 
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static byte[] bitmapToPNG(Bitmap srcBitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // 轉成PNG不會失真，所以quality參數值會被忽略
+        srcBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);//壓縮圖片，bitmap壓縮成png再上傳到伺服器，png以byte傳輸
+        return baos.toByteArray();
     }
 }

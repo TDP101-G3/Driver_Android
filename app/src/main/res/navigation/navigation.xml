@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/login">
 
     <fragment
         android:id="@+id/mainFragment"
@@ -19,4 +19,87 @@
         android:name="com.lu.driver.DriveFragment"
         android:label="fragment_drive"
         tools:layout="@layout/fragment_drive" />
+    <fragment
+        android:id="@+id/login"
+        android:name="com.yu.driver.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_forgetPassword"
+            app:destination="@id/forgetPassword" />
+        <action
+            android:id="@+id/action_login_to_signUp"
+            app:destination="@id/signUp" />
+        <action
+            android:id="@+id/action_login_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgetPassword"
+        android:name="com.yu.driver.ForgetPassword"
+        android:label="fragment_forget_password"
+        tools:layout="@layout/fragment_forget_password" >
+        <action
+            android:id="@+id/action_forgetPassword_to_changePassword"
+            app:destination="@id/changePassword" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePassword"
+        android:name="com.yu.driver.ChangePassword"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" >
+        <action
+            android:id="@+id/action_changePassword_to_changePasswordSuccess"
+            app:destination="@id/changePasswordSuccess" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordSuccess"
+        android:name="com.yu.driver.ChangePasswordSuccess"
+        android:label="fragment_change_password_success"
+        tools:layout="@layout/fragment_change_password_success" >
+        <action
+            android:id="@+id/action_changePasswordSuccess_to_login"
+            app:destination="@id/login" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUp"
+        android:name="com.yu.driver.SignUp"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUp_to_signUpBankAccount"
+            app:destination="@id/signUpBankAccount" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpBankAccount"
+        android:name="com.yu.driver.SignUpBankAccount"
+        android:label="fragment_sign_up_bank_account"
+        tools:layout="@layout/fragment_sign_up_bank_account" >
+        <action
+            android:id="@+id/action_signUpBankAccount_to_signUp_2"
+            app:destination="@id/signUp_2" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkPhoneNumber"
+        android:name="com.yu.driver.CheckPhoneNumber"
+        android:label="fragment_check_phone_number"
+        tools:layout="@layout/fragment_check_phone_number" >
+        <action
+            android:id="@+id/action_checkPhoneNumber_to_notChecked"
+            app:destination="@id/notChecked" />
+    </fragment>
+    <fragment
+        android:id="@+id/notChecked"
+        android:name="com.yu.driver.NotChecked"
+        android:label="fragment_not_checked"
+        tools:layout="@layout/fragment_not_checked" />
+    <fragment
+        android:id="@+id/signUp_2"
+        android:name="com.yu.driver.SignUp_2"
+        android:label="fragment_sign_up_2"
+        tools:layout="@layout/fragment_sign_up_2" >
+        <action
+            android:id="@+id/action_signUp_2_to_checkPhoneNumber"
+            app:destination="@id/checkPhoneNumber" />
+    </fragment>
 </navigation>

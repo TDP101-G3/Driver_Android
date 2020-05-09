@@ -33,5 +33,33 @@
     <string name="textOk">確認</string>
     <string name="textLogout">登出</string>
     <string name="textCancelCheck">你的訂單已被取消</string>
+    <string name="textPassword">密碼</string>
+    <string name="textLogin">登入</string>
+    <string name="textForgetPassword">忘記密碼</string>
+    <string name="textSignUpYet">尚未擁有帳戶嗎？</string>
+    <string name="textConfirm">確認</string>
+    <string name="textPasswordChangeSuccess">密碼已更改完成</string>
+    <string name="textEmail">Email</string>
+    <string name="textRealName">真實姓名</string>
+    <string name="textPhoneNumber">手機號碼</string>
+    <string name="textBankAccountName">帳戶名稱</string>
+    <string name="textBankCode">銀行代號(共三碼)</string>
+    <string name="textSignUP">註冊</string>
+    <string name="textCheckNumber">驗證碼</string>
+    <string name="textNotGetCheckNumber">未收到驗證碼</string>
+    <string name="textContinue">下一頁</string>
+    <string name="textIdPhoto">身份證正反面</string>
+    <string name="textDriverLicense">職業駕照正反面</string>
+    <string name="textDriverSecure">駕駛責任險</string>
+    <string name="textWhiteEmail">請輸入註冊信箱</string>
+    <string name="textWhiteNewPassword">請輸入新密碼</string>
+    <string name="textCheckNewPassword">請再次輸入新密碼</string>
+    <string name="textSignUpDetail">"請詳填以下資料，完成後會有專人審查，謝謝！  "</string>
+    <string name="textPhoneNumberCheckDetail">"已寄送簡訊，請輸入收到的驗證碼  "</string>
+    <string name="textChangePassword">更改密碼</string>
+    <string name="textSetBankAccount">銀行帳戶設定</string>
+    <string name="textCheck">驗證</string>
+    <string name="textBankAccount">銀行帳戶</string>
+
 
 </resources>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yu.driver.SignUp_2" >
+
+    <TextView
+        android:id="@+id/tvIdPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/textIdPhoto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivIdFront"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/group_367"
+        android:clickable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvIdPhoto" />
+
+    <ImageView
+        android:id="@+id/ivIdBack"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/group_367"
+        android:clickable="true"
+        app:layout_constraintStart_toEndOf="@+id/ivIdFront"
+        app:layout_constraintTop_toBottomOf="@+id/tvIdPhoto" />
+
+    <TextView
+        android:id="@+id/tvDriverLicense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/textDriverLicense"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivIdFront" />
+
+    <ImageView
+        android:id="@+id/ivLicenseFront"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/group_367"
+        android:clickable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDriverLicense" />
+
+    <ImageView
+        android:id="@+id/ivLicenseBack"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/group_367"
+        android:clickable="true"
+        app:layout_constraintStart_toEndOf="@+id/ivLicenseFront"
+        app:layout_constraintTop_toBottomOf="@+id/tvDriverLicense" />
+
+    <TextView
+        android:id="@+id/tvDriverSecure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/textDriverSecure"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLicenseFront" />
+
+    <ImageView
+        android:id="@+id/ivDriverSecure"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/group_367"
+        android:clickable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDriverSecure" />
+
+    <Button
+        android:id="@+id/btSignUP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:background="@drawable/main_button"
+        android:text="@string/textSignUP"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivDriverSecure"
+        android:layout_marginLeft="161dp" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="230dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLicenseBack"
+        android:layout_marginLeft="230dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
