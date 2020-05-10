@@ -90,10 +90,10 @@ public class SignUpBankAccount extends Fragment {
                                                   }
 
 
-                                                  sign2.putString("name", driver_name);
-                                                  sign2.putString("password", driver_password);
-                                                  sign2.putString("email", driver_email);
-                                                  sign2.putString("phoneNumber", driver_phone);
+                                                  sign2.putString("name", driver_name_2);
+                                                  sign2.putString("password", driver_password_2);
+                                                  sign2.putString("email", driver_email_2);
+                                                  sign2.putString("phoneNumber", driver_phone_2);
                                                   sign2.putString("bankAccountName", driver_bank_name_2);
                                                   sign2.putString("bankAccount", driver_bank_account_2);
                                                   sign2.putString("bankCode", driver_bank_code_2);
