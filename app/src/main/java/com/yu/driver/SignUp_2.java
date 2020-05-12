@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,6 +58,7 @@ public class SignUp_2 extends Fragment {
     List<Bitmap> bitmaps;
     private int count = 0;
     private byte[] idFront, idBack, licenseFront, licenseBack, driverSecure;
+//    private TextView tvResult;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class SignUp_2 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btSignUp = view.findViewById(R.id.btSignUP);
-//        TextView tvResult = view.findViewById(R.id.tvResult);
+//        tvResult = view.findViewById(R.id.tvResult);
         ivIdFront = view.findViewById(R.id.ivIdFront);
         ivIdBack = view.findViewById(R.id.ivIdBack);
         ivLicenseFront = view.findViewById(R.id.ivLicenseFront);
