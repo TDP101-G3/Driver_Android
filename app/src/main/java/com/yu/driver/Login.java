@@ -71,7 +71,7 @@ public class Login extends Fragment {
         tvForgetPassword = view.findViewById(R.id.tvForgetPassword);
         tvSignUp = view.findViewById(R.id.tvSignUp);
 
-        preferences = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);   //取得偏好設定檔
+        preferences = activity.getSharedPreferences(Common.PREF_FILE, MODE_PRIVATE);   //取得偏好設定檔
 
 
         tvForgetPassword.setOnClickListener(new View.OnClickListener() {

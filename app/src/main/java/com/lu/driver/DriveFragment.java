@@ -69,7 +69,7 @@ public class DriveFragment extends Fragment {
     private TextView tvName,tvPhone,tvModel,tvPlate,tvStart,tvEnd;
     private Button btSelect,btCancel,btFinish,btToCustomer,btToEnd;
     private static final String TAG = "TAG_DriveFragment";
-    private int driver_id = 1;
+    private int driver_id;
     private int order_id = 0;
     private NavController navController;
     private String o,d;
@@ -111,6 +111,9 @@ public class DriveFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
+                MODE_PRIVATE);
+        driver_id = pref.getInt("driver_id", 0);
         driver = new Driver(driver_id);
         registerChatReceiver();
         navController = findNavController(view);

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.navigation.Navigation.findNavController;
 import static com.lu.driver.CommonTwo.chatWebSocketClient;
 
@@ -68,7 +70,7 @@ public class MainFragment extends Fragment {
     private GoogleMap map;
     private Driver driver;
     private int driver_status = 0;
-    private int driver_id = 1;
+    private int driver_id;
     private LocalBroadcastManager broadcastManager;
     private NavController navController;
     private String user;
@@ -77,6 +79,9 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
+                MODE_PRIVATE);
+        driver_id = pref.getInt("driver_id", 0);
         user = "driver"+driver_id;
         CommonTwo.saveUserName(activity,user);
         broadcastManager = LocalBroadcastManager.getInstance(activity);

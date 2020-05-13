@@ -9,8 +9,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,14 +31,18 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private TextView tvNameinfo,tvScoreinfo;
-    private int driver_id = 1;
+    private int driver_id;
     private CircleImageView ivUser;
     private Driver driver = null;
     private Order order = null;
+    private Activity activity;
+    private Runnable runnable;
+    private Handler handler = new Handler();
     private static final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
         setContentView(R.layout.activity_main);
         setUpActionBar();
         initDrawer();
@@ -46,49 +53,63 @@ public class MainActivity extends AppCompatActivity {
         tvNameinfo = header.findViewById(R.id.tvNameinfo);
         tvScoreinfo = header.findViewById(R.id.tvScoreinfo);
         ivUser = header.findViewById(R.id.ivUser);
-        if (Common.networkConnected(this)) {
-            String url = Common.URL_SERVER + "DriverServlet";
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "findById");
-            jsonObject.addProperty("driver_id", driver_id);
-            try {
-                String jsonIn = new CommonTask(url, jsonObject.toString()).execute().get();
-                driver = new Gson().fromJson(jsonIn, Driver.class);
-            } catch (Exception e) {
-                Log.e(TAG, e.toString());
-            }
-        } else {
-            Common.showToast(this, R.string.textNoNetwork);
-        }
-        String name = "";
-        if (driver != null ){
-            name = driver.getDriver_name();
-        }
-        tvNameinfo.setText(name);
+        runnable = new Runnable() {
+            public void run() {
+                SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
+                        MODE_PRIVATE);
+                driver_id = pref.getInt("driver_id", 0);
+                if (Common.networkConnected(activity)) {
+                    String url = Common.URL_SERVER + "DriverServlet";
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("action", "findById");
+                    jsonObject.addProperty("driver_id", driver_id);
+                    try {
+                        String jsonIn = new CommonTask(url, jsonObject.toString()).execute().get();
+                        driver = new Gson().fromJson(jsonIn, Driver.class);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+                } else {
+                    Common.showToast(activity, R.string.textNoNetwork);
+                }
+                String name = "";
+                if (driver != null) {
+                    name = driver.getDriver_name();
+                }
+                tvNameinfo.setText(name);
 
-        if (Common.networkConnected(this)) {
-            String url = Common.URL_SERVER + "OrderServlet";
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "getDriver_score");
-            jsonObject.addProperty("driver_id", driver_id);
-            try {
-                String jsonIn = new CommonTask(url, jsonObject.toString()).execute().get();
-                order = new Gson().fromJson(jsonIn, Order.class);
-            } catch (Exception e) {
-                Log.e(TAG, e.toString());
+                if (Common.networkConnected(activity)) {
+                    String url = Common.URL_SERVER + "OrderServlet";
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("action", "getDriver_score");
+                    jsonObject.addProperty("driver_id", driver_id);
+                    try {
+                        String jsonIn = new CommonTask(url, jsonObject.toString()).execute().get();
+                        order = new Gson().fromJson(jsonIn, Order.class);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+                } else {
+                    Common.showToast(activity, R.string.textNoNetwork);
+                }
+                String score = "";
+                Double s = 5.0;
+                if (order != null) {
+                    s = order.getDriver_score();
+                }
+                DecimalFormat mDecimalFormat = new DecimalFormat("#.#");
+                score = mDecimalFormat.format(s);
+                tvScoreinfo.setText(score);
+                showPhoto();
+                if(name.equals("")){
+                    handler.postDelayed(this,1000);
+                }
+                else{
+                    handler.removeCallbacks(runnable);
+                }
             }
-        } else {
-            Common.showToast(this, R.string.textNoNetwork);
-        }
-        String score = "";
-        Double s = 5.0;
-        if(order != null){
-            s = order.getDriver_score();
-        }
-        DecimalFormat mDecimalFormat = new DecimalFormat("#.#");
-        score = mDecimalFormat.format(s);
-        tvScoreinfo.setText(score);
-        showPhoto();
+        };
+        handler.postDelayed(runnable,1000);
     }
 
     private void setUpActionBar() {
