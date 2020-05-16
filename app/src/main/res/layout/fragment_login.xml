@@ -49,7 +49,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:textSize="18sp"
-            android:hint="@string/textPassword" />
+            android:hint="@string/textPassword"
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -76,7 +77,8 @@
         android:layout_marginTop="80dp"
         android:text="@string/textSignUpYet"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvForgetPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/tvForgetPassword"
+        android:layout_marginLeft="148dp" />
 
     <Button
         android:id="@+id/btLogin"
@@ -90,7 +92,9 @@
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/tilPassword"
+        android:layout_marginLeft="161dp"
+        android:layout_marginRight="162dp" />
 
     <View
         android:layout_width="match_parent"
