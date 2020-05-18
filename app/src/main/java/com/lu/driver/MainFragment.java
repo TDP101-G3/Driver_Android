@@ -105,6 +105,7 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // 初始化LocalBroadcastManager並註冊BroadcastReceiver
         // Inflate the layout for this fragment
+        activity.setTitle(R.string.textMain);
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
