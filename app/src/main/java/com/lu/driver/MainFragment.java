@@ -88,7 +88,7 @@ public class MainFragment extends Fragment {
         CommonTwo.connectServer(activity, CommonTwo.loadUserName(activity));
         locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(3000) //3秒 單位：ms
+                .setInterval(1000) //1秒 單位：ms
                 .setSmallestDisplacement(5); //5公尺 單位：m
         locationCallback = new LocationCallback() {
             @Override
@@ -152,7 +152,7 @@ public class MainFragment extends Fragment {
                         if (count == 0) {
                             Common.showToast(activity, R.string.textUpdateFail);
                         } else {
-                            Common.showToast(activity, R.string.textUpdateSuccess);
+                            Common.showToast(activity, R.string.textOnline);
                         }
                     } else {
                         Common.showToast(activity, R.string.textNoNetwork);
@@ -176,7 +176,7 @@ public class MainFragment extends Fragment {
                         if (count == 0) {
                             Common.showToast(activity, R.string.textUpdateFail);
                         } else {
-                            Common.showToast(activity, R.string.textUpdateSuccess);
+                            Common.showToast(activity, R.string.textOffLine);
                         }
                     } else {
                         Common.showToast(activity, R.string.textNoNetwork);
