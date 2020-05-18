@@ -1,7 +1,9 @@
 package com.yu.driver;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
@@ -12,15 +14,19 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -35,6 +41,7 @@ import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,15 +56,17 @@ public class SignUp_2 extends Fragment {
     private final static String TAG = "TAG_Sign2";
     private Activity activity;
     private Button btSignUp;
-    private ImageView ivIdFront, ivIdBack, ivLicenseFront, ivLicenseBack, ivDriverSecure;
-    private File file_ivIdFront, file_ivIdBack, file_ivLicenseFront, file_ivLicenseBack, file_ivDriverSecure;
+    private ImageView ivIdFront, ivIdBack, ivLicenseFront, ivLicenseBack, ivDriverSecure, ivUserPhoto;
+    private File file_ivIdFront, file_ivIdBack, file_ivLicenseFront, file_ivLicenseBack, file_ivDriverSecure, file_ivUserPhoto;
     private static final int REQ_TAKE_PICTURE = 0;
     private static final int REQ_PICK_PICTURE = 1;
     private static final int REQ_CROP_PICTURE = 2;
-    private Uri contentUri;
-    List<Bitmap> bitmaps;
+    private static final int PER_EXTERNAL_STORAGE = 201;
+    private Uri contentUri, croppedImageUri;
+//    List<Bitmap> bitmaps;
     private int count = 0;
-    private byte[] idFront, idBack, licenseFront, licenseBack, driverSecure;
+    private byte[] idFront, idBack, licenseFront, licenseBack, driverSecure,userPhoto;
+    private int action = 0;
 //    private TextView tvResult;
 
     @Override
@@ -84,7 +93,8 @@ public class SignUp_2 extends Fragment {
         ivLicenseFront = view.findViewById(R.id.ivLicenseFront);
         ivLicenseBack = view.findViewById(R.id.ivLicenseBack);
         ivDriverSecure = view.findViewById(R.id.ivDriverSecure);
-        bitmaps = new ArrayList<>();
+        ivUserPhoto = view.findViewById(R.id.ivUserPhoto);
+//        bitmaps = new ArrayList<>();
 
 
         Bundle sign2 = getArguments();
@@ -103,86 +113,170 @@ public class SignUp_2 extends Fragment {
             ivIdFront.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File dir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                    file_ivIdFront = new File(dir, "ivIdFront.jpg");
-                    contentUri = FileProvider.getUriForFile(
-                            activity, activity.getPackageName() + ".provider", file_ivIdFront);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
-
-                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                        startActivityForResult(intent, REQ_TAKE_PICTURE);
-                    } else {
-                        Common.showToast(activity, "啟動相機失敗");
+                    action = 1;
+                    PopupMenu popupMenu = null;
+                    // 判斷版本
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        popupMenu = new PopupMenu(activity, v, Gravity.END);
                     }
+                    popupMenu.inflate(R.menu.photo_menu);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.takePicture:
+                                    askExternalStoragePermission();
+                                    takePicture("IdFront.jpg",file_ivIdFront);
+                                    break;
+                                case R.id.pickPicture:
+                                    pickPicture();
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+
                 }
             });
             ivIdBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File dir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                    file_ivIdBack = new File(dir, "ivIdBack.jpg");
-                    contentUri = FileProvider.getUriForFile(
-                            activity, activity.getPackageName() + ".provider", file_ivIdBack);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
-
-                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                        startActivityForResult(intent, REQ_TAKE_PICTURE);
-                    } else {
-                        Common.showToast(activity, "啟動相機失敗");
+                    action = 2;
+                    PopupMenu popupMenu = null;
+                    // 判斷版本
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        popupMenu = new PopupMenu(activity, v, Gravity.END);
                     }
+                    popupMenu.inflate(R.menu.photo_menu);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.takePicture:
+                                    askExternalStoragePermission();
+                                    takePicture("IdBack.jpg",file_ivIdBack);
+                                    break;
+                                case R.id.pickPicture:
+                                    pickPicture();
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
                 }
             });
             ivLicenseFront.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File dir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                    file_ivLicenseFront = new File(dir, "ivLicenseFront.jpg");
-                    contentUri = FileProvider.getUriForFile(
-                            activity, activity.getPackageName() + ".provider", file_ivLicenseFront);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
-
-                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                        startActivityForResult(intent, REQ_TAKE_PICTURE);
-                    } else {
-                        Common.showToast(activity, "啟動相機失敗");
+                    action = 3;
+                    PopupMenu popupMenu = null;
+                    // 判斷版本
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        popupMenu = new PopupMenu(activity, v, Gravity.END);
                     }
+                    popupMenu.inflate(R.menu.photo_menu);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.takePicture:
+                                    askExternalStoragePermission();
+                                    takePicture("LicenseFront.jpg",file_ivLicenseFront);
+                                    break;
+                                case R.id.pickPicture:
+                                    pickPicture();
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
                 }
             });
             ivLicenseBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File dir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                    file_ivLicenseBack = new File(dir, "ivLicenseBack.jpg");
-                    contentUri = FileProvider.getUriForFile(
-                            activity, activity.getPackageName() + ".provider", file_ivLicenseBack);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
-
-                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                        startActivityForResult(intent, REQ_TAKE_PICTURE);
-                    } else {
-                        Common.showToast(activity, "啟動相機失敗");
+                    action = 4;
+                    PopupMenu popupMenu = null;
+                    // 判斷版本
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        popupMenu = new PopupMenu(activity, v, Gravity.END);
                     }
+                    popupMenu.inflate(R.menu.photo_menu);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.takePicture:
+                                    askExternalStoragePermission();
+                                    takePicture("LicenseBack.jpg",file_ivLicenseBack);
+                                    break;
+                                case R.id.pickPicture:
+                                    pickPicture();
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
                 }
             });
             ivDriverSecure.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File dir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                    file_ivDriverSecure = new File(dir, "ivDriverSecure.jpg");
-                    contentUri = FileProvider.getUriForFile(
-                            activity, activity.getPackageName() + ".provider", file_ivDriverSecure);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
-
-                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                        startActivityForResult(intent, REQ_TAKE_PICTURE);
-                    } else {
-                        Common.showToast(activity, "啟動相機失敗");
+                    action = 5;
+                    PopupMenu popupMenu = null;
+                    // 判斷版本
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        popupMenu = new PopupMenu(activity, v, Gravity.END);
                     }
+                    popupMenu.inflate(R.menu.photo_menu);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.takePicture:
+                                    askExternalStoragePermission();
+                                    takePicture("DriverSecure.jpg",file_ivDriverSecure);
+                                    break;
+                                case R.id.pickPicture:
+                                    pickPicture();
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
+            ivUserPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    action = 6;
+                    PopupMenu popupMenu = null;
+                    // 判斷版本
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        popupMenu = new PopupMenu(activity, v, Gravity.END);
+                    }
+                    popupMenu.inflate(R.menu.photo_menu);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.takePicture:
+                                    askExternalStoragePermission();
+                                    takePicture("UserPhoto.jpg",file_ivUserPhoto);
+                                    break;
+                                case R.id.pickPicture:
+                                    pickPicture();
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
                 }
             });
 
@@ -190,18 +284,12 @@ public class SignUp_2 extends Fragment {
             btSignUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (bitmaps.size() != 5) {//如果沒拍照，就不能上傳
-                        Common.showToast(activity, "驗證資料不完整就不能繼續註冊哦！");
+                    if (idFront == null || idBack == null || licenseFront == null || licenseBack == null || driverSecure == null) {//如果沒拍照，就不能上傳                        Common.showToast(activity, "驗證資料不完整就不能繼續註冊哦！");
                         return;
                     } else {
                         if (Common.networkConnected(activity)) {
                             String url = Common.URL_SERVER + "DriverServlet";//連伺服器
                             Driver driver = new Driver(driver_name, driver_email, driver_password, driver_phone, driver_bank_name, driver_bank_account, driver_bank_code);
-                            idFront = Common.bitmapToPNG(bitmaps.get(0));
-                            idBack = Common.bitmapToPNG(bitmaps.get(1));
-                            licenseFront = Common.bitmapToPNG(bitmaps.get(2));
-                            licenseBack = Common.bitmapToPNG(bitmaps.get(3));
-                            driverSecure = Common.bitmapToPNG(bitmaps.get(4));
                             JsonObject jsonObject = new JsonObject();   //建一個物件
                             jsonObject.addProperty("action", "signUp");
                             jsonObject.addProperty("driver", new Gson().toJson(driver));
@@ -211,6 +299,7 @@ public class SignUp_2 extends Fragment {
                             jsonObject.addProperty("licenseFrontBase64", Base64.encodeToString(licenseFront, Base64.DEFAULT));
                             jsonObject.addProperty("licenseBackBase64", Base64.encodeToString(licenseBack, Base64.DEFAULT));
                             jsonObject.addProperty("driverSecureBase64", Base64.encodeToString(driverSecure, Base64.DEFAULT));
+                            jsonObject.addProperty("userPhotoBase64", Base64.encodeToString(userPhoto, Base64.DEFAULT));
 
                             int count = 0;
                             try {
@@ -249,7 +338,40 @@ public class SignUp_2 extends Fragment {
                     crop(intent.getData());
                     break;
                 case REQ_CROP_PICTURE:
-                    handleCropResult(intent);
+                    Log.d(TAG, "REQ_CROP_PICTURE: " + croppedImageUri.toString());
+                    try {
+                        // 顯示縮圖
+                        Bitmap picture = BitmapFactory.decodeStream(
+                                activity.getContentResolver().openInputStream(croppedImageUri));
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        picture.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+                        if ( action == 1 ) {
+                            ivIdFront.setImageBitmap(picture);
+                            idFront = out.toByteArray();
+                        } else if ( action == 2 ){
+                            ivIdBack.setImageBitmap(picture);
+                            idBack = out.toByteArray();
+                        } else if ( action == 3 ){
+                            ivLicenseFront.setImageBitmap(picture);
+                            licenseFront = out.toByteArray();
+                        } else if ( action == 4 ){
+                            ivLicenseBack.setImageBitmap(picture);
+                            licenseBack = out.toByteArray();
+                        } else if ( action == 5 ){
+                            ivDriverSecure.setImageBitmap(picture);
+                            driverSecure = out.toByteArray();
+                        } else if ( action == 6 ){
+                            ivUserPhoto.setImageBitmap(picture);
+                            userPhoto = out.toByteArray();
+                        } else {
+                            Common.showToast(activity, R.string.textNoCameraApp);
+                            return;
+                        }
+                        // 轉成可回傳資料型態
+                    } catch (FileNotFoundException e) {
+                        Log.e(TAG, e.toString());
+                    }
                     break;
             }
 
@@ -261,60 +383,54 @@ public class SignUp_2 extends Fragment {
         File file = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         file = new File(file, "picture_cropped.jpg");
         Uri destinationUri = Uri.fromFile(file);
+        croppedImageUri = Uri.fromFile(file);
         UCrop.of(sourceImageUri, destinationUri)
 //                .withAspectRatio(16, 9) // 設定裁減比例
 //                .withMaxResultSize(500, 500) // 設定結果尺寸不可超過指定寬高
                 .start(activity, this, REQ_CROP_PICTURE);
     }
-
-    private void handleCropResult(Intent intent) {
-
-        Uri resultUri = UCrop.getOutput(intent);
-        if (resultUri == null) {
-            return;
-        }
-        Bitmap bitmap = null;
-        try {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                bitmap = BitmapFactory.decodeStream(
-                        activity.getContentResolver().openInputStream(resultUri));
-                bitmaps.add(bitmap);
-                count++;
-
-            } else {
-                ImageDecoder.Source source =
-                        ImageDecoder.createSource(activity.getContentResolver(), resultUri);
-                bitmap = ImageDecoder.decodeBitmap(source);
-                bitmaps.add(bitmap);
-                count++;
-            }
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
-        }
-
-        if (bitmap != null) {
-            switch (count) {
-                case 1:
-//                    Common.showToast(activity, "22222222222");
-                    ivIdFront.setImageBitmap(bitmaps.get(0));
-                    break;
-                case 2:
-                    ivIdBack.setImageBitmap(bitmaps.get(1));
-                    break;
-                case 3:
-                    ivLicenseFront.setImageBitmap(bitmaps.get(2));
-                    break;
-                case 4:
-                    ivLicenseBack.setImageBitmap(bitmaps.get(3));
-                    break;
-                case 5:
-                    ivDriverSecure.setImageBitmap(bitmaps.get(4));
-                    break;
-            }
+    private void askExternalStoragePermission() {
+        String[] permissions = {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        };
+        int result = ContextCompat.checkSelfPermission(activity, permissions[0]);
+        if (result == PackageManager.PERMISSION_DENIED) {
+            requestPermissions(permissions, PER_EXTERNAL_STORAGE);
         }
     }
+
+    private void takePicture(String filename, File myFile){
+        // 這行就是利用intent去開啟Android的照相機介面，再然後拍完照，即呼叫onActivityResult
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // 取得外部儲存資源
+        File dir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (dir != null && !dir.exists()) {
+            if (!dir.mkdirs()) {
+                Log.e(TAG, getString(R.string.textDirNotCreated));
+                return;
+            }
+        }
+        myFile = new File(dir, filename); // 要存檔的路徑
+        contentUri = FileProvider.getUriForFile(
+                activity, activity.getPackageName() + ".provider", myFile);
+        // 新增一張照片，在開啟Android的照相機介面時，把這張照片指定為輸出檔案位置。
+        // 將uri存入，MediaStore.EXTRA_OUTPUT是指定存储Uri的键，通過傳送一個EXTRA_OUTPUT的Extra給Intent，指定儲存圖像的路徑。
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
+
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            // 呼叫 onActivityResult()
+            startActivityForResult(intent, REQ_TAKE_PICTURE); // 拍照
+        } else {
+            Common.showToast(activity, R.string.textNoCameraApp);
+        }
+    }
+
+    private void pickPicture() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQ_PICK_PICTURE);
+    }
+
 }
 
 
