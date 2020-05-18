@@ -202,6 +202,27 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="logout">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1419" />
+                            <option name="y" value="390" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_logout_to_mainFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="mainFragment">
                     <value>
                       <LayoutPositions>
@@ -322,6 +343,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_signUp_2_to_checkPhoneNumber">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_signUp_2_to_login">
                               <value>
                                 <LayoutPositions />
                               </value>
