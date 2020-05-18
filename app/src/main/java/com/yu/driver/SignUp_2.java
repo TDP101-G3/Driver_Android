@@ -284,7 +284,8 @@ public class SignUp_2 extends Fragment {
             btSignUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (idFront == null || idBack == null || licenseFront == null || licenseBack == null || driverSecure == null) {//如果沒拍照，就不能上傳                        Common.showToast(activity, "驗證資料不完整就不能繼續註冊哦！");
+                    if (idFront == null || idBack == null || licenseFront == null || licenseBack == null || driverSecure == null || userPhoto == null) {//如果沒拍照，就不能上傳                        Common.showToast(activity, "驗證資料不完整就不能繼續註冊哦！");
+                        Common.showToast(activity, "驗證資料不完整就不能繼續註冊哦！");
                         return;
                     } else {
                         if (Common.networkConnected(activity)) {

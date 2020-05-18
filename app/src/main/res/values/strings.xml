@@ -95,11 +95,8 @@
     <string name="textEmailIsInvalid">Email不能為空值</string>
     <string name="textNoUserFound">找不到使用者資料</string>
     <string name="textNameIsInvalid">姓名不能為空值</string>
-<<<<<<< HEAD
     <string name="textUserPhoto">大頭貼</string>
-=======
     <string name="textOnline">上線</string>
     <string name="textOffLine">下線</string>
->>>>>>> bebe831c4ce58078fde1005652603fd24fd130ad
 
 </resources>
