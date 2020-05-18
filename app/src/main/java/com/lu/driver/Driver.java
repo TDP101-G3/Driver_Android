@@ -37,6 +37,22 @@ public class Driver implements Serializable {
         this.driver_longitude = driver_longitude;
     }
 
+    public Driver updateDriver(String driver_name, String driver_phone, String driver_email) {
+        Driver driver;
+        this.driver_name = driver_name;
+        this.driver_phone = driver_phone;
+        this.driver_email = driver_email;
+        driver = new Driver(driver_id, driver_name, driver_phone, driver_email);
+        return driver;
+    }
+
+    public Driver(int driver_id, String driver_name, String driver_phone, String driver_email) {
+        this.driver_id = driver_id;
+        this.driver_name = driver_name;
+        this.driver_phone = driver_phone;
+        this.driver_email = driver_email;
+    }
+
     public Driver(String driver_name, String driver_email, String driver_password, String driver_phone, String driver_bank_name, String driver_bank_account, String driver_bank_code) {
         this.driver_name = driver_name;
         this.driver_email = driver_email;
@@ -46,6 +62,7 @@ public class Driver implements Serializable {
         this.driver_bank_account = driver_bank_account;
         this.driver_bank_code = driver_bank_code;
     }
+
 
     public void setStatus(int driver_status) {
         this.driver_status = driver_status;

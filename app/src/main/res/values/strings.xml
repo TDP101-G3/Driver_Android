@@ -8,8 +8,6 @@
     <string name="textOpinion">意見反應</string>
     <string name="textName">Name</string>
     <string name="textScore">4.0</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textOpen">Open</string>
     <string name="textClose">Close</string>
@@ -49,7 +47,11 @@
     <string name="textNotGetCheckNumber">未收到驗證碼</string>
     <string name="textContinue">下一頁</string>
     <string name="textIdPhoto">身份證正反面</string>
+    <string name="textIdPhotoFront">身份證正面</string>
+    <string name="textIdPhotoBack">身份證反面</string>
+    <string name="textId">身份證</string>
     <string name="textDriverLicense">職業駕照正反面</string>
+    <string name="textLicense">職業駕照</string>
     <string name="textDriverSecure">駕駛責任險</string>
     <string name="textWhiteEmail">請輸入註冊信箱</string>
     <string name="textWhiteNewPassword">請輸入新密碼</string>
@@ -61,6 +63,37 @@
     <string name="textCheck">驗證</string>
     <string name="textBankAccount">銀行帳戶</string>
     <string name="textPreferencesSaved">偏好設定已儲存</string>
-
+    <string name="textOrderNumber">訂單編號</string>
+    <string name="textOrderDate">行程日期</string>
+    <string name="textOrderMoney">行程費用</string>
+    <string name="textOrderPlate">行程車輛</string>
+    <string name="textOrderCustomer">行程顧客</string>
+    <string name="textOrderHelp">需要協助處理這趟行程的問題嗎？</string>
+    <string name="textStartAddress">出發地</string>
+    <string name="textEndAddress">目的地</string>
+    <string name="textNoOrdersFound">您沒有訂單記錄</string>
+    <string name="textPersonalPhoto">上傳照片</string>
+    <string name="textFiles">身分證、職業駕照、駕駛責任險</string>
+    <string name="textEditDone">完成修改</string>
+    <string name="textTakePicture">拍照</string>
+    <string name="textPickPicture">從相簿選擇</string>
+    <string name="textCommit">申請審核</string>
+    <string name="textInsuranceDate">yyyy/mm/dd</string>
+    <string name="textInsuranceDateTitle">到期日</string>
+    <string name="textDriverLicenceFront">職業駕照正面</string>
+    <string name="textDriverLicenceBack">職業駕照反面</string>
+    <string name="textNoInsuranceFound">找不到保險資料</string>
+    <string name="textDateIsInvalid">請輸入保險到期日</string>
+    <string name="textImageIsInvalid">請上傳保險資料</string>
+    <string name="textNoCameraApp">相機功能無法使用</string>
+    <string name="textNoCrop">無法裁切相片</string>
+    <string name="textDirNotCreated">Directory Picture 無法建立</string>
+    <string name="textNoImageCropAppFound">無法取得截圖</string>
+    <string name="textShouldGrant">permission to access external</string>
+    <string name="textUserEdit">編輯個人資料</string>
+    <string name="textPhoneIsInvalid">手機不能為空值</string>
+    <string name="textEmailIsInvalid">Email不能為空值</string>
+    <string name="textNoUserFound">找不到使用者資料</string>
+    <string name="textNameIsInvalid">姓名不能為空值</string>
 
 </resources>

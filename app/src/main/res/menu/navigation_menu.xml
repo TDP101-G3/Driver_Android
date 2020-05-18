@@ -3,13 +3,13 @@
 
     <group >
         <item
-            android:id="@+id/driverFragment"
+            android:id="@+id/userFragment"
             android:title="@string/textData" />
         <item
             android:id="@+id/bankFragment"
             android:title="@string/textBank" />
         <item
-            android:id="@+id/order_detailFragment"
+            android:id="@+id/orderListFragment"
             android:title="@string/textOrder" />
         <item
             android:id="@+id/incomeFragment"
