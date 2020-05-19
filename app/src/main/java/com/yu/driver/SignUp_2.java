@@ -63,7 +63,6 @@ public class SignUp_2 extends Fragment {
     private static final int REQ_CROP_PICTURE = 2;
     private static final int PER_EXTERNAL_STORAGE = 201;
     private Uri contentUri, croppedImageUri;
-//    List<Bitmap> bitmaps;
     private int count = 0;
     private byte[] idFront, idBack, licenseFront, licenseBack, driverSecure,userPhoto;
     private int action = 0;
