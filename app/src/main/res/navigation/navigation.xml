@@ -201,4 +201,19 @@
         android:name="com.user.driverInsuranceUpdateFragment"
         android:label="fragment_driver_insurance_update"
         tools:layout="@layout/fragment_driver_insurance_update" />
+    <fragment
+        android:id="@+id/opinionFragment"
+        android:name="com.lu.driver.opinionFragment"
+        android:label="fragment_opinion"
+        tools:layout="@layout/fragment_opinion" />
+    <fragment
+        android:id="@+id/opinionRespondFragment"
+        android:name="com.lu.driver.OpinionRespondFragment"
+        android:label="fragment_opinion_respond"
+        tools:layout="@layout/fragment_opinion_respond" />
+    <fragment
+        android:id="@+id/opinionReactionFragment"
+        android:name="com.lu.driver.OpinionReactionFragment"
+        android:label="fragment_opinion_reaction"
+        tools:layout="@layout/fragment_opinion_reaction" />
 </navigation>
