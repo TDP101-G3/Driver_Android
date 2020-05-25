@@ -67,8 +67,8 @@ public class orderListFragment extends Fragment {
     private List<Order> getOrders(int driver_id) {
         List<Order> orders = null;
         if (Common.networkConnected(activity)) {
-            //String url = Common.URL_SERVER + "OrderServlet";
-            String url = Common.URL_SERVER + "DriverServlet";
+            String url = Common.URL_SERVER + "OrderServlet";
+            //String url = Common.URL_SERVER + "DriverServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getOrders");
             jsonObject.addProperty("id", driver_id);

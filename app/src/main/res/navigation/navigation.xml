@@ -6,6 +6,24 @@
     app:startDestination="@id/login">
 
     <fragment
+        android:id="@+id/bankFragment"
+        android:name="com.user.bankFragment"
+        android:label="fragment_bank"
+        tools:layout="@layout/fragment_bank">
+        <action
+            android:id="@+id/action_bankFragment_to_bankCheckFragment"
+            app:destination="@id/bankCheckFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bankCheckFragment"
+        android:name="com.user.bankCheckFragment"
+        android:label="fragment_bank_check"
+        tools:layout="@layout/fragment_bank_check" >
+        <action
+            android:id="@+id/action_bankCheckFragment_to_bankFragment"
+            app:destination="@id/bankFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/orderListFragment"
         android:name="com.order.orderListFragment"
         android:label="fragment_order_list"
@@ -183,4 +201,19 @@
         android:name="com.user.driverInsuranceUpdateFragment"
         android:label="fragment_driver_insurance_update"
         tools:layout="@layout/fragment_driver_insurance_update" />
+    <fragment
+        android:id="@+id/opinionFragment"
+        android:name="com.lu.driver.opinionFragment"
+        android:label="fragment_opinion"
+        tools:layout="@layout/fragment_opinion" />
+    <fragment
+        android:id="@+id/opinionRespondFragment"
+        android:name="com.lu.driver.OpinionRespondFragment"
+        android:label="fragment_opinion_respond"
+        tools:layout="@layout/fragment_opinion_respond" />
+    <fragment
+        android:id="@+id/opinionReactionFragment"
+        android:name="com.lu.driver.OpinionReactionFragment"
+        android:label="fragment_opinion_reaction"
+        tools:layout="@layout/fragment_opinion_reaction" />
 </navigation>

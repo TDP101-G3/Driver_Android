@@ -46,6 +46,14 @@ public class Driver implements Serializable {
         return driver;
     }
 
+    public Driver (String driver_bank_name,String driver_bank_account, String driver_bank_code,int driver_id) {
+        this.driver_id = driver_id;
+        this.driver_bank_name = driver_bank_name;
+        this.driver_bank_account = driver_bank_account;
+        this.driver_bank_code = driver_bank_code;
+
+    }
+
     public Driver(int driver_id, String driver_name, String driver_phone, String driver_email) {
         this.driver_id = driver_id;
         this.driver_name = driver_name;

@@ -97,5 +97,12 @@
     <string name="textNameIsInvalid">姓名不能為空值</string>
     <string name="textTryAgain">請再試一次</string>
     <string name="textNoMap">Google Map 無法顯示</string>
+    <string name="textUserPhoto">大頭貼</string>
+    <string name="textOnline">上線</string>
+    <string name="textOffLine">下線</string>
+    <string name="textMain">首頁</string>
+    <string name="textDrive">代駕</string>
+    <string name="textEdit">編輯</string>
+    <string name="textReaction">意見反應</string>
 
 </resources>
