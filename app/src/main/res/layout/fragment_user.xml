@@ -52,6 +52,14 @@
             app:layout_constraintStart_toEndOf="@+id/ivUserPhoto"
             app:layout_constraintTop_toTopOf="@+id/ivUserPhoto" />
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/editblue"
+            app:layout_constraintBottom_toBottomOf="@+id/ivUserPhoto"
+            app:layout_constraintEnd_toEndOf="@+id/ivUserPhoto" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

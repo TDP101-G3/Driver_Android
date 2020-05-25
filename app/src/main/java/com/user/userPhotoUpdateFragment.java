@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +41,7 @@ import com.google.gson.JsonObject;
 import com.lu.driver.Common;
 import com.lu.driver.CommonTask;
 import com.lu.driver.R;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,6 +49,7 @@ import java.io.FileNotFoundException;
 import java.util.Calendar;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class userPhotoUpdateFragment extends Fragment {
@@ -59,12 +62,15 @@ public class userPhotoUpdateFragment extends Fragment {
     private static final int REQ_CROP_PICTURE = 2;
     private static final int PER_EXTERNAL_STORAGE = 201;
     private Uri contentUri, croppedImageUri;
-    private int driver_id = 1;
+    private int driver_id;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
+                MODE_PRIVATE);
+        driver_id = pref.getInt("driver_id", 0);
     }
 
     @Override
@@ -148,9 +154,6 @@ public class userPhotoUpdateFragment extends Fragment {
             }
         });
     }
-    private void showToast(Context context, int messageId) {
-        Toast.makeText(context, messageId, Toast.LENGTH_SHORT).show();
-    }
 
     // 詢問使用者 取用外部儲存體的公開檔案
     private void askExternalStoragePermission() {
@@ -180,7 +183,7 @@ public class userPhotoUpdateFragment extends Fragment {
         if (intent.resolveActivity(activity.getPackageManager()) != null) {
             startActivityForResult(intent, REQ_TAKE_PICTURE); // 拍照
         } else {
-            showToast(activity, R.string.textNoCameraApp);
+            Common.showToast(activity, R.string.textNoCameraApp);
         }
     }
 
@@ -222,36 +225,13 @@ public class userPhotoUpdateFragment extends Fragment {
 
     private void crop(Uri sourceImageUri) {
         File file = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        file = new File(file, "picture_cropped.jpg");
+        file = new File(file, "user_photo_cropped.jpg");
         croppedImageUri = Uri.fromFile(file);
-        // take care of exceptions
-        try {
-            // call the standard crop action intent (the user device may not support it)
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            // the recipient of this Intent can read soruceImageUri's data
-            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            // set image source Uri and type
-            cropIntent.setDataAndType(sourceImageUri, "image/*");
-            // send crop message
-            cropIntent.putExtra("crop", "true");
-            // aspect ratio of the cropped area, 0 means user define
-            cropIntent.putExtra("aspectX", 0); // this sets the max width
-            cropIntent.putExtra("aspectY", 0); // this sets the max height
-            // output with and height, 0 keeps original size
-            cropIntent.putExtra("outputX", 0);
-            cropIntent.putExtra("outputY", 0);
-            // whether keep original aspect ratio
-            cropIntent.putExtra("scale", true);
-            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, croppedImageUri);
-            // whether return data by the intent
-            cropIntent.putExtra("return-data", true);
-            // start the activity - we handle returning in onActivityResult
-            startActivityForResult(cropIntent, REQ_CROP_PICTURE);
-        }
-        // respond to users whose devices do not support the crop action
-        catch (ActivityNotFoundException e) {
-            showToast(activity, R.string.textNoImageCropAppFound);
-        }
+        Uri destinationUri = Uri.fromFile(file);
+        UCrop.of(sourceImageUri, destinationUri)
+                .withAspectRatio(1, 1) // 設定裁減比例
+                .withMaxResultSize(900, 900) // 設定結果尺寸不可超過指定寬高
+                .start(activity, this, REQ_CROP_PICTURE);
     }
 
     @Override

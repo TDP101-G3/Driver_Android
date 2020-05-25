@@ -1,6 +1,7 @@
 package com.user;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,18 +28,23 @@ import com.lu.driver.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class driverFilesFragment extends Fragment {
     private String TAG = "TAG_driverFilesFragment";
     private FragmentActivity activity;
     private TextView tvIdStatus, tvLicenceStatus, tvInsuranceStatus, tvExpireDate;
     private CommonTask statusTask;
-    private int driver_id = 1;
+    private int driver_id;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
+                MODE_PRIVATE);
+        driver_id = pref.getInt("driver_id", 0);
     }
 
     @Override

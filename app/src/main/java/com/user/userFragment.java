@@ -1,6 +1,7 @@
 package com.user;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,8 @@ import com.lu.driver.Driver;
 import com.lu.driver.ImageTask;
 import com.lu.driver.R;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class userFragment extends Fragment {
     private String TAG = "TAG_userFragment";
@@ -35,13 +38,16 @@ public class userFragment extends Fragment {
     private ImageTask driverImageTask;
     private Driver driver;
     private int imageSize;
-    private int driver_id = 1;
+    private int driver_id;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
+                MODE_PRIVATE);
+        driver_id = pref.getInt("driver_id", 0);
     }
 
     @Override
@@ -76,8 +82,7 @@ public class userFragment extends Fragment {
         ivUserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                Navigation.findNavController(view).navigate(R.id.action_userFragment_to_userPhotoUpdateFragment, bundle);
+                Navigation.findNavController(view).navigate(R.id.action_userFragment_to_userPhotoUpdateFragment);
             }
         });
 

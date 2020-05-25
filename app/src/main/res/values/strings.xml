@@ -95,5 +95,7 @@
     <string name="textEmailIsInvalid">Email不能為空值</string>
     <string name="textNoUserFound">找不到使用者資料</string>
     <string name="textNameIsInvalid">姓名不能為空值</string>
+    <string name="textTryAgain">請再試一次</string>
+    <string name="textNoMap">Google Map 無法顯示</string>
 
 </resources>
