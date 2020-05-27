@@ -65,7 +65,7 @@ public class DriveFragment extends Fragment {
     private View view;
     private static final int REQ_STAR = 2;
     private static final int REQ_CHECK_SETTINGS = 1;
-    private Activity activity;
+    private static Activity activity;
     private TextView tvName,tvPhone,tvModel,tvPlate,tvStart,tvEnd;
     private Button btSelect,btCancel,btFinish,btToCustomer,btToEnd;
     private static final String TAG = "TAG_DriveFragment";
@@ -75,11 +75,11 @@ public class DriveFragment extends Fragment {
     private String o,d;
     Double longitude,latitude;
     private LocalBroadcastManager broadcastManager;
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
-    private FusedLocationProviderClient fusedLocationClient;
-    private Location lastLocation;
-    private Driver driver;
+    private static LocationRequest locationRequest;
+    private static LocationCallback locationCallback;
+    private static FusedLocationProviderClient fusedLocationClient;
+    private static Location lastLocation;
+    private static Driver driver;
     private CircleImageView ivCustomer;
     String customer_id;
     @Override
@@ -276,6 +276,8 @@ public class DriveFragment extends Fragment {
         btToCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(activity, LocationService.class);
+                activity.startService(intent);
                 Address addressReverse = reverseGeocode(latitude, longitude);
                 StringBuilder sb = new StringBuilder();
                 if (addressReverse != null) {
@@ -311,6 +313,8 @@ public class DriveFragment extends Fragment {
         btToEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(activity, LocationService.class);
+                activity.startService(intent);
                 Address addressOrigin = getAddress(origin);
                 Address addressDestination = getAddress(destination);
                 boolean notFound = false;
@@ -513,7 +517,7 @@ public class DriveFragment extends Fragment {
     }
 
     // 更新位置訊息
-    private void updateLastLocationInfo(Location lastLocation) {
+    public static void updateLastLocationInfo(Location lastLocation) {
         if (lastLocation == null) {
             Toast.makeText(activity, R.string.textLocationNotFound, Toast.LENGTH_SHORT).show();
             return;
@@ -580,7 +584,7 @@ public class DriveFragment extends Fragment {
         });
     }
 
-    private void showLastLocation() {
+    public static void showLastLocation() {
         if (fusedLocationClient == null) {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
             fusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
@@ -601,8 +605,8 @@ public class DriveFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         if (fusedLocationClient != null) {
             fusedLocationClient.removeLocationUpdates(locationCallback);
             fusedLocationClient = null;
@@ -610,9 +614,20 @@ public class DriveFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+//        if (fusedLocationClient != null) {
+//            fusedLocationClient.removeLocationUpdates(locationCallback);
+//            fusedLocationClient = null;
+//        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         showLastLocation();
+        Intent intent = new Intent(activity, LocationService.class);
+        activity.stopService(intent);
     }
 
     private void showPhoto(){
@@ -630,4 +645,5 @@ public class DriveFragment extends Fragment {
             ivCustomer.setImageResource(R.drawable.no_image);
         }
     }
+
 }
