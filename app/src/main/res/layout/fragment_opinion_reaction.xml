@@ -7,15 +7,13 @@
     tools:context=".OpinionReactionFragment" >
 
     <EditText
-        android:id="@+id/etMessage"
+        android:id="@+id/etQuestion"
         android:layout_width="350dp"
         android:layout_height="300dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/textview_border"
-        android:ems="10"
         android:gravity="top"
         android:hint="請輸入遇到問題"
-        android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +25,7 @@
         android:background="@drawable/main_button"
         android:text="回報"
         android:textColor="#1565C0"
-        app:layout_constraintEnd_toEndOf="@+id/etMessage"
-        app:layout_constraintStart_toStartOf="@+id/etMessage"
-        app:layout_constraintTop_toBottomOf="@+id/etMessage" />
+        app:layout_constraintEnd_toEndOf="@+id/etQuestion"
+        app:layout_constraintStart_toStartOf="@+id/etQuestion"
+        app:layout_constraintTop_toBottomOf="@+id/etQuestion" />
 </androidx.constraintlayout.widget.ConstraintLayout>
