@@ -213,6 +213,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="incomeFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-367" />
+                            <option name="y" value="31" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="login">
                     <value>
                       <LayoutPositions>
@@ -298,13 +310,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="opinionFragment2">
+                  <entry key="opinionFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-66" />
-                            <option name="y" value="-1815" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>

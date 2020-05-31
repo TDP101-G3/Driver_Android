@@ -107,5 +107,8 @@
     <string name="textInsertFail">上傳失敗</string>
     <string name="textInsertSuccess">上傳成功</string>
     <string name="textCannotbenull">輸入不能為空</string>
+    <string name="textClear">清除</string>
+    <string name="textOrderCount">行程數</string>
+    <string name="textWeekIncomeDetail">當週收入</string>
 
 </resources>

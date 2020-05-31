@@ -6,6 +6,11 @@
     app:startDestination="@id/login">
 
     <fragment
+        android:id="@+id/incomeFragment"
+        android:name="com.data.incomeFragment"
+        android:label="fragment_income"
+        tools:layout="@layout/fragment_income" />
+    <fragment
         android:id="@+id/bankFragment"
         android:name="com.user.bankFragment"
         android:label="fragment_bank"
