@@ -66,14 +66,14 @@ public class DriveFragment extends Fragment {
     private static final int REQ_STAR = 2;
     private static final int REQ_CHECK_SETTINGS = 1;
     private static Activity activity;
-    private TextView tvName,tvPhone,tvModel,tvPlate,tvStart,tvEnd;
-    private Button btSelect,btCancel,btFinish,btToCustomer,btToEnd;
+    private TextView tvName, tvPhone, tvModel, tvPlate, tvStart, tvEnd;
+    private Button btSelect, btCancel, btFinish, btToCustomer, btToEnd;
     private static final String TAG = "TAG_DriveFragment";
     private int driver_id;
     private int order_id = 0;
     private NavController navController;
-    private String o,d;
-    Double longitude,latitude;
+    private String o, d;
+    Double longitude, latitude;
     private LocalBroadcastManager broadcastManager;
     private static LocationRequest locationRequest;
     private static LocationCallback locationCallback;
@@ -82,6 +82,7 @@ public class DriveFragment extends Fragment {
     private static Driver driver;
     private CircleImageView ivCustomer;
     String customer_id;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +134,7 @@ public class DriveFragment extends Fragment {
         btToCustomer = view.findViewById(R.id.btToCustomer);
         btToEnd = view.findViewById(R.id.btToEnd);
         ivCustomer = view.findViewById(R.id.ivCustomer);
-        customer_id = CommonTwo.loadCustomer(activity).replaceAll("customer","");
+        customer_id = CommonTwo.loadCustomer(activity).replaceAll("customer", "");
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "CustomerServlet";
             JsonObject jsonObject = new JsonObject();
@@ -148,12 +149,12 @@ public class DriveFragment extends Fragment {
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
         }
-        if(customer != null) {
-            String Name,Phone,Model,Plate;
-            Name = "姓名："+customer.getCustomer_name();
-            Phone = "電話："+customer.getCustomer_phone();
-            Model = "車款："+customer.getCustomer_car_model()+" ("+customer.getCustomer_car_color()+")";
-            Plate = "車號："+customer.getCustomer_number_plate();
+        if (customer != null) {
+            String Name, Phone, Model, Plate;
+            Name = "姓名：" + customer.getCustomer_name();
+            Phone = "電話：" + customer.getCustomer_phone();
+            Model = "車款：" + customer.getCustomer_car_model() + " (" + customer.getCustomer_car_color() + ")";
+            Plate = "車號：" + customer.getCustomer_number_plate();
             tvName.setText(Name);
             tvPhone.setText(Phone);
             tvModel.setText(Model);
@@ -205,15 +206,15 @@ public class DriveFragment extends Fragment {
             Common.showToast(activity, R.string.textNoNetwork);
         }
 
-        if(driver != null){
+        if (driver != null) {
             longitude = driver.getDriver_longitude();
             latitude = driver.getDriver_latitude();
         }
 
-        if(order != null) {
-            String Start,End;
-            Start ="出發地："+order.getOrder_start();
-            End = "目的地："+order.getOrder_end();
+        if (order != null) {
+            String Start, End;
+            Start = "出發地：" + order.getOrder_start();
+            End = "目的地：" + order.getOrder_end();
             tvStart.setText(Start);
             tvEnd.setText(End);
             o = order.getOrder_start();
@@ -416,7 +417,7 @@ public class DriveFragment extends Fragment {
             final ChatMessage chatMessage = new Gson().fromJson(message, ChatMessage.class);
             String m = chatMessage.getMessage();
             // 接收到聊天訊息，若發送者與目前聊天對象相同，就換頁
-            if(m.equals("cancel")){
+            if (m.equals("cancel")) {
                 new AlertDialog.Builder(activity)
                         /* 設定標題 */
                         //.setTitle(R.string.textTitle)
@@ -454,12 +455,12 @@ public class DriveFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         view = getView();
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == REQ_STAR) {
                 SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
                         MODE_PRIVATE);
                 float n = pref.getFloat("n", 0);
-                Order order = new Order(order_id,n);
+                Order order = new Order(order_id, n);
                 if (Common.networkConnected(activity)) {
                     String url = Common.URL_SERVER + "OrderServlet";
                     JsonObject jsonObject = new JsonObject();
@@ -480,16 +481,15 @@ public class DriveFragment extends Fragment {
                 } else {
                     Common.showToast(activity, R.string.textNoNetwork);
                 }
-                CommonTwo.showToast(activity,String.valueOf(n));
+                CommonTwo.showToast(activity, String.valueOf(n));
                 activity.onBackPressed();
             }
-        }
-        else if(resultCode == RESULT_CANCELED){
+        } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == REQ_STAR) {
                 SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
                         MODE_PRIVATE);
                 float m = pref.getFloat("m", 0);
-                Order order = new Order(order_id,m);
+                Order order = new Order(order_id, m);
                 if (Common.networkConnected(activity)) {
                     String url = Common.URL_SERVER + "OrderServlet";
                     JsonObject jsonObject = new JsonObject();
@@ -510,7 +510,7 @@ public class DriveFragment extends Fragment {
                 } else {
                     Common.showToast(activity, R.string.textNoNetwork);
                 }
-                CommonTwo.showToast(activity,String.valueOf(m));
+                CommonTwo.showToast(activity, String.valueOf(m));
                 activity.onBackPressed();
             }
         }
@@ -525,7 +525,7 @@ public class DriveFragment extends Fragment {
 
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "DriverServlet";
-            driver.setLocation(lastLocation.getLatitude(),lastLocation.getLongitude());
+            driver.setLocation(lastLocation.getLatitude(), lastLocation.getLongitude());
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "locationUpdate");
             jsonObject.addProperty("driver", new Gson().toJson(driver));
@@ -587,6 +587,9 @@ public class DriveFragment extends Fragment {
     public static void showLastLocation() {
         if (fusedLocationClient == null) {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             fusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
