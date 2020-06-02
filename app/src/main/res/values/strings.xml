@@ -110,5 +110,6 @@
     <string name="textClear">清除</string>
     <string name="textOrderCount">行程數</string>
     <string name="textWeekIncomeDetail">當週收入</string>
+    <string name="textNoOpinionsFound">no opinions found</string>
 
 </resources>

@@ -20,6 +20,11 @@ public class Opinion implements Serializable {
         this.driver_opinion_question = driver_opinion_question;
     }
 
+    public Opinion(String driver_opinion_question, String driver_opinion_answer) {
+        this.driver_opinion_question = driver_opinion_question;
+        this.driver_opinion_answer = driver_opinion_answer;
+    }
+
     public int getDriver_opinion_id() {
         return driver_opinion_id;
     }

@@ -215,10 +215,19 @@
         android:id="@+id/opinionRespondFragment"
         android:name="com.lu.driver.OpinionRespondFragment"
         android:label="fragment_opinion_respond"
-        tools:layout="@layout/fragment_opinion_respond" />
+        tools:layout="@layout/fragment_opinion_respond" >
+        <action
+            android:id="@+id/action_opinionRespondFragment_to_opinionDetailFragment"
+            app:destination="@id/opinionDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/opinionReactionFragment"
         android:name="com.lu.driver.OpinionReactionFragment"
         android:label="fragment_opinion_reaction"
         tools:layout="@layout/fragment_opinion_reaction" />
+    <fragment
+        android:id="@+id/opinionDetailFragment"
+        android:name="com.lu.driver.OpinionDetailFragment"
+        android:label="fragment_opinion_detail"
+        tools:layout="@layout/fragment_opinion_detail" />
 </navigation>

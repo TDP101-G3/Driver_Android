@@ -310,6 +310,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="opinionDetailFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="676" />
+                            <option name="y" value="-1830" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="opinionFragment">
                     <value>
                       <LayoutPositions>
