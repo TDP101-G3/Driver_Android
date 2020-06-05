@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class LocationService extends Service {
-    private static final String TAG = "TAG_MusicService";
+    private static final String TAG = "TAG_LocationService";
     private PowerManager.WakeLock wakeLock;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
@@ -38,7 +38,7 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand");
-        return super.onStartCommand(intent, flags, startId);
+        return START_REDELIVER_INTENT;
     }
 
     @Nullable
@@ -86,6 +86,7 @@ public class LocationService extends Service {
         if (locationTread != null) {
             locationTread = null;
         }
+        Log.d(TAG, "stopUpdateLocation");
     }
 
     class LocationTread extends Thread{

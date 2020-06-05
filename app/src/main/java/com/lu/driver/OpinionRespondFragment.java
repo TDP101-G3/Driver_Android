@@ -89,7 +89,7 @@ public class OpinionRespondFragment extends Fragment {
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "OpinionServlet";
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "findById");
+            jsonObject.addProperty("action", "DriverfindById");
             jsonObject.addProperty("driver_id", driver_id);
             String jsonOut = jsonObject.toString();
             opinionGetAllTask = new CommonTask(url, jsonOut);

@@ -50,11 +50,11 @@ public class OpinionDetailFragment extends Fragment {
         String question = "";
         String answer = "";
         if (opinion!= null) {
-            question = opinion.getDriver_opinion_question();
-            answer = opinion.getDriver_opinion_answer();
-        }
-        if(answer == null){
-            answer = "請等待客服人員回覆";
+            question = "問題：\n" + opinion.getDriver_opinion_question();
+            answer = "回答：\n" + opinion.getDriver_opinion_answer();
+            if(opinion.getDriver_opinion_answer()==null){
+                answer = "回答：\n請等待客服人員回覆";
+            }
         }
         tvQuestion.setText(question);
         tvAnswer.setText(answer);

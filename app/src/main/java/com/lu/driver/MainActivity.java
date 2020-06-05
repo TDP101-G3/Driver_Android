@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView ivUser;
     private Driver driver = null;
     private Order order = null;
-    private Activity activity;
+    private static Activity activity;
     private Runnable runnable;
     private Handler handler = new Handler();
     private static final String TAG = "MainActivity";
@@ -161,5 +162,15 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ivUser.setImageResource(R.drawable.no_image);
         }
+    }
+
+    public static void background(){
+        Intent intent = new Intent(activity, LocationService.class);
+        activity.startService(intent);
+    }
+
+    public static void stopBackground(){
+        Intent intent = new Intent(activity, LocationService.class);
+        activity.stopService(intent);
     }
 }

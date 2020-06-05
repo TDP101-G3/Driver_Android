@@ -327,8 +327,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-62" />
+                            <option name="y" value="-1819" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -354,6 +354,15 @@
                             <option name="x" value="433" />
                             <option name="y" value="-1821" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_opinionRespondFragment_to_opinionDetailFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

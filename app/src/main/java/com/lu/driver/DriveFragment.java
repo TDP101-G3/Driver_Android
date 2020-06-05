@@ -82,6 +82,7 @@ public class DriveFragment extends Fragment {
     private static Driver driver;
     private CircleImageView ivCustomer;
     String customer_id;
+    public static int num = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class DriveFragment extends Fragment {
         CommonTwo.connectServer(activity, CommonTwo.loadUserName(activity));
         locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(3000) //3秒 單位：ms
+                .setInterval(1000) //1秒 單位：ms
                 .setSmallestDisplacement(5); //5公尺 單位：m
         locationCallback = new LocationCallback() {
             @Override
@@ -277,8 +278,7 @@ public class DriveFragment extends Fragment {
         btToCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, LocationService.class);
-                activity.startService(intent);
+                MainActivity.background();
                 Address addressReverse = reverseGeocode(latitude, longitude);
                 StringBuilder sb = new StringBuilder();
                 if (addressReverse != null) {
@@ -314,8 +314,7 @@ public class DriveFragment extends Fragment {
         btToEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, LocationService.class);
-                activity.startService(intent);
+                MainActivity.background();
                 Address addressOrigin = getAddress(origin);
                 Address addressDestination = getAddress(destination);
                 boolean notFound = false;
@@ -539,7 +538,7 @@ public class DriveFragment extends Fragment {
             if (count == 0) {
                 Common.showToast(activity, R.string.textUpdateFail);
             } else {
-                Common.showToast(activity, R.string.textUpdateSuccess);
+                //Common.showToast(activity, R.string.textUpdateSuccess);
             }
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
@@ -610,6 +609,7 @@ public class DriveFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
         if (fusedLocationClient != null) {
             fusedLocationClient.removeLocationUpdates(locationCallback);
             fusedLocationClient = null;
@@ -619,6 +619,7 @@ public class DriveFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        num = 1;
 //        if (fusedLocationClient != null) {
 //            fusedLocationClient.removeLocationUpdates(locationCallback);
 //            fusedLocationClient = null;
@@ -629,8 +630,8 @@ public class DriveFragment extends Fragment {
     public void onResume() {
         super.onResume();
         showLastLocation();
-        Intent intent = new Intent(activity, LocationService.class);
-        activity.stopService(intent);
+        num = 0;
+        MainActivity.stopBackground();
     }
 
     private void showPhoto(){

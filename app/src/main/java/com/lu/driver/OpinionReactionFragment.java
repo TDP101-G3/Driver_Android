@@ -63,7 +63,7 @@ public class OpinionReactionFragment extends Fragment {
                     String url = Common.URL_SERVER + "OpinionServlet";
                     Opinion opinion = new Opinion(driver_id, driver_opinion_question);
                     JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("action", "opinionInsert");
+                    jsonObject.addProperty("action", "DriveropinionInsert");
                     jsonObject.addProperty("opinion", new Gson().toJson(opinion));
                     int count = 0;
                     try {

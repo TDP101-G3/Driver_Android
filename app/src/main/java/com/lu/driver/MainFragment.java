@@ -82,8 +82,8 @@ public class MainFragment extends Fragment {
         SharedPreferences pref = activity.getSharedPreferences(Common.PREF_FILE,
                 MODE_PRIVATE);
         driver_id = pref.getInt("driver_id", 0);
-        user = "driver"+driver_id;
-        CommonTwo.saveUserName(activity,user);
+        user = "driver" + driver_id;
+        CommonTwo.saveUserName(activity, user);
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         CommonTwo.connectServer(activity, CommonTwo.loadUserName(activity));
         locationRequest = LocationRequest.create()
@@ -132,7 +132,7 @@ public class MainFragment extends Fragment {
         tbtStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     if (fusedLocationClient == null) {
                         showLastLocation();
                     }
@@ -158,8 +158,7 @@ public class MainFragment extends Fragment {
                     } else {
                         Common.showToast(activity, R.string.textNoNetwork);
                     }
-                }
-                else{
+                } else {
                     driver_status = 0;
                     if (Common.networkConnected(activity)) {
                         String url = Common.URL_SERVER + "DriverServlet";
@@ -209,7 +208,7 @@ public class MainFragment extends Fragment {
             String m = chatMessage.getMessage();
             // 接收到聊天訊息，若發送者與目前聊天對象相同，就換頁
             if (m.equals("call")) {
-                CommonTwo.showToast(context,"call");
+                //CommonTwo.showToast(context, "call");
                 //navController.navigate(R.id.driveFragment);
                 new AlertDialog.Builder(activity)
                         /* 設定標題 */
@@ -247,7 +246,7 @@ public class MainFragment extends Fragment {
                                 }
                                 String sender = CommonTwo.loadUserName(activity);
                                 String friend = chatMessage.getSender();
-                                CommonTwo.saveCustomer(activity,friend);
+                                CommonTwo.saveCustomer(activity, friend);
                                 String message = "yes";
                                 ChatMessage chatMessage = new ChatMessage("chat", sender, friend, message);
                                 String chatMessageJson = new Gson().toJson(chatMessage);
@@ -276,8 +275,8 @@ public class MainFragment extends Fragment {
         }
     };
 
-    private void refreshCenter(double lat,double lon){
-        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(lat,lon));
+    private void refreshCenter(double lat, double lon) {
+        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(lat, lon));
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(18);
         map.moveCamera(center);
         map.animateCamera(zoom);
@@ -328,11 +327,11 @@ public class MainFragment extends Fragment {
             Toast.makeText(activity, R.string.textLocationNotFound, Toast.LENGTH_SHORT).show();
             return;
         }
-        refreshCenter(lastLocation.getLatitude(),lastLocation.getLongitude());
+        refreshCenter(lastLocation.getLatitude(), lastLocation.getLongitude());
 
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "DriverServlet";
-            driver.setLocation(lastLocation.getLatitude(),lastLocation.getLongitude());
+            driver.setLocation(lastLocation.getLatitude(), lastLocation.getLongitude());
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "locationUpdate");
             jsonObject.addProperty("driver", new Gson().toJson(driver));
@@ -346,7 +345,7 @@ public class MainFragment extends Fragment {
             if (count == 0) {
                 Common.showToast(activity, R.string.textUpdateFail);
             } else {
-                Common.showToast(activity, R.string.textUpdateSuccess);
+                //Common.showToast(activity, R.string.textUpdateSuccess);
             }
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
@@ -362,7 +361,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(driver_status == 2){
+        if (driver_status == 2) {
             driver_status = 1;
             if (Common.networkConnected(activity)) {
                 String url = Common.URL_SERVER + "DriverServlet";
@@ -410,7 +409,6 @@ public class MainFragment extends Fragment {
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -434,6 +432,9 @@ public class MainFragment extends Fragment {
     private void showLastLocation() {
         if (fusedLocationClient == null) {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             fusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
